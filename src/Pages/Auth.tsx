@@ -1,34 +1,41 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { Inputs } from "../Types/index";
-import { Input } from "../Components/Input";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { Input } from '@rebass/forms';
+import { CustomButton } from "../Components/CustomButton";
 
 interface IAuthProps {
   onSubmitHandler: () => void
 }
 
-export const Auth: FC<IAuthProps> = ({onSubmitHandler}) => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => {
-    console.log(data)
+export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
+  const [email, setEmail] = useState('')
+  const [pass, setPass] = useState('')
+
+  const submitHandler = () => {
     onSubmitHandler()
+    console.log({
+      email,
+      pass
+    })
+    localStorage.setItem('token', 'token')
   };
 
-  console.log(watch("date")) // watch input value by passing the name of it
-
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)} style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-around",
-        alignItems: "center"
-      }}>
-        <Input label={"Email"} type={"email"} register={register} inputType={"email"} required={true} errors={errors}/>
-        <Input label={"Password"} type={"password"} register={register} inputType={"password"} required={true} errors={errors}/>
-
-        <input type="submit" />
-      </form>
+    <div style={{
+      minHeight: '200px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-around',
+      alignItems: 'center'
+    }}>
+      <div>
+        <span>E-mail:</span>
+        <Input type={"email"} value={email} onChange={e => setEmail(e.currentTarget.value)} />
+      </div>
+      <div>
+        <span>Password:</span>
+        <Input type={"password"} value={pass} onChange={e => setPass(e.currentTarget.value)} />
+      </div>
+      <CustomButton handler={submitHandler} title={'Submit'} />
     </div>
   );
 }

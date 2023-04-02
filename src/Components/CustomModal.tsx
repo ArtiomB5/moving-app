@@ -2,6 +2,7 @@ import React, { FC, useEffect } from 'react';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import { Button, Link } from 'rebass';
+import { CustomButton } from './CustomButton';
 
 interface IAuthProps {
   buttonTitle: string
@@ -12,9 +13,7 @@ interface IAuthProps {
 }
 
 export const CustomModal: FC<IAuthProps> = ({ buttonTitle, children, isOpen, setIsOpen, buttonType = 'link' }) => {
-  useEffect(() => {
-    localStorage.setItem('token', 'token')
-  }, [])
+
   const openModal = () => setIsOpen(true)
   const closeModal = () => setIsOpen(false)
 
@@ -31,9 +30,7 @@ export const CustomModal: FC<IAuthProps> = ({ buttonTitle, children, isOpen, set
         }}>
         {buttonTitle}
       </Link>}
-      {buttonType === 'button' && <Button mr={2} onClick={openModal}>
-        {buttonTitle}
-      </Button>}
+      {buttonType === 'button' && <CustomButton handler={openModal} title={buttonTitle}/>}
       {isOpen && <Modal open={isOpen} onClose={closeModal} center>
         <div style={{
           padding: "30px 5px 10px 5px"

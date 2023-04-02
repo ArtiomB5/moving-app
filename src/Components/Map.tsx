@@ -6,6 +6,7 @@ import { Point } from './Point';
 import { Button } from 'rebass';
 import { CustomModal } from './CustomModal';
 import { Ordering } from '../Pages/Ordering';
+import { CustomButton } from './CustomButton';
 
 interface IMapProps {
   geolocation: [number, number]
@@ -120,9 +121,9 @@ export const Map: FC<IMapProps> = ({ geolocation }) => {
           {points[1].length > 0
             && <Point coords={points[1]} pointName={"Point B"} />}
         </div>
-        <div>
+        <div style={{width: '100%', display: 'flex', justifyContent: 'center', gap: '10px'}}>
           {points[0].length > 0
-            && <Button variant={"outline"} mr={2} id="clear" style={{ color: "red" }} onClick={clearHandler}>{"Clear Points"}</Button>}
+            && <CustomButton handler={clearHandler} title={'Clear Points'} isPrimary={false}/>}
 
           {points[0].length > 0
             && points[1].length > 0

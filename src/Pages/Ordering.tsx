@@ -1,6 +1,7 @@
 import { Checkbox, Input, Label, Select } from "@rebass/forms";
 import { ChangeEvent, FC, useState } from "react";
 import { Button } from "rebass";
+import { CustomButton } from './../Components/CustomButton';
 
 const cars = [4.5, 5.5, 6, 8, 10, 11, 20]
 
@@ -31,162 +32,54 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
 
   return (
     <>
-      <div>
-        <Label htmlFor='name'>
-          Date:
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <span>Date:</span>
           <Input type="date" placeholder={'Choose Moving Date'} value={date} onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setDate(e.currentTarget.value)
           }} />
-        </Label>
-        <Label htmlFor='name'>
-          Time:
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <span>Time:</span>
           <Input type="time" placeholder={'Choose Moving Time'} value={time} onChange={(e: ChangeEvent<HTMLInputElement>) => {
             setTime(e.currentTarget.value)
           }} />
-        </Label>
-        <Label htmlFor='carLoadCapacity'>
-          Car Load Capacity, tonnes:
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+          <span>Car Load Capacity, tonnes:</span>
           <Select
             id='carLoadCapacity'
             name='carLoadCapacity'
             defaultValue={carLoadCapacity}
+            style={{padding: '0 100px'}}
             onChange={e => {
               setCarLoadCapacity(Number(e.currentTarget.value))
             }}
           >
             {cars.map(car => <option key={car}>{car}</option>)}
           </Select>
-        </Label>
-        <Label>
-          Loading:
-          <Checkbox
-            type={'checkbox'}
-            placeholder={'loading checkbox'}
-            onChange={(e) => setLoading(e.currentTarget.value)}
-          />
-        </Label>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <span>Loading:</span>
+            <Checkbox
+              type={'checkbox'}
+              placeholder={'loading checkbox'}
+              onChange={(e) => setLoading(e.currentTarget.value)}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <span>Packing:</span>
+            <Checkbox
+              type={'checkbox'}
+              placeholder={'packing checkbox'}
+              onChange={(e) => setPacking(e.currentTarget.value)}
+            />
+          </div>
+        </div>
 
-        <Label width={[1]}>
-          Packing:
-          <Checkbox
-            type={'checkbox'}
-            placeholder={'packing checkbox'}
-            onChange={(e) => setPacking(e.currentTarget.value)}
-          />
-        </Label>
-        <Button onClick={submitHandler}>
-          Submit Order
-        </Button>
+        <CustomButton handler={submitHandler} title={'Submit Order'} />
       </div >
-      {/* <Flex flexWrap='wrap' mx={-2}>
-        <Box px={2} py={2} width={1 / 2}>
-          <Label htmlFor='name'>Date & Time</Label>
-          <Input type="date" placeholder={'Choose Moving Date'} value={date} onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setDate(e.currentTarget.value)
-            console.log('date', e)
-            console.log('date', e)
-
-          }} />
-          <Input type="time" placeholder={'Choose Moving Time'} value={time} onChange={(e: ChangeEvent<HTMLInputElement>) => {
-            setTime(e.currentTarget.value)
-            console.log('time', e)
-          }} />
-        </Box>
-        <Box px={2} py={2} width={1 / 2}>
-          <Label htmlFor='carLoadCapacity'>Car Load Capacity, tonnes</Label>
-          <Select
-            id='carLoadCapacity'
-            name='carLoadCapacity'
-            defaultValue={carLoadCapacity}
-            onChange={e => {
-              setCarLoadCapacity(Number(e.currentTarget.value))
-            }}
-          >
-            {cars.map(car => <option key={car}>{car}</option>)}
-          </Select>
-        </Box>
-        <Box px={2} py={2} width={1 / 2}>
-          <Label width={[1 / 2, 1 / 4]} p={2}>
-            <Checkbox
-              type={'checkbox'}
-              placeholder={'loading checkbox'}
-              onChange={(e) => setLoading(e.currentTarget.value)}
-            />
-            Loading
-          </Label>
-
-          <Label width={[1 / 2, 1 / 4]} p={2}>
-            <Checkbox
-              type={'checkbox'}
-              placeholder={'packing checkbox'}
-              onChange={(e) => setPacking(e.currentTarget.value)}
-            />
-            Packing
-          </Label>
-        </Box>
-        <Box px={2} py={2} width={1 / 2}>
-          <Button onClick={submitHandler}>
-            Submit Order
-          </Button>
-        </Box>
-      </Flex> */}
-      {/* <Box
-        as='form'
-        onSubmit={e => e.preventDefault()}
-        py={3}>
-        <Flex mx={-2} mb={3}>
-          <Box width={1 / 2} px={2}>
-            <Label htmlFor='name'>Name</Label>
-            <Input type="date" placeholder={'Choose Moving Date'} value={date} onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setDate(e.currentTarget.value)
-              console.log('date', e)
-              console.log('date', e)
-
-            }} />
-            <Input type="time" placeholder={'Choose Moving Time'} value={time} onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setTime(e.currentTarget.value)
-              console.log('time', e)
-            }} />
-          </Box>
-          <Box width={1 / 2} px={2}>
-            <Label htmlFor='carLoadCapacity'>Car Load Capacity, tonnes</Label>
-            <Select
-              id='carLoadCapacity'
-              name='carLoadCapacity'
-              defaultValue={carLoadCapacity}
-              onChange={e => {
-                setCarLoadCapacity(Number(e.currentTarget.value))
-              }}
-            >
-              {cars.map(car => <option key={car}>{car}</option>)}
-            </Select>
-          </Box>
-        </Flex>
-        <Flex mx={-2} flexWrap='wrap'>
-          <Label width={[1 / 2, 1 / 4]} p={2}>
-            <Checkbox
-              type={'checkbox'}
-              placeholder={'loading checkbox'}
-              onChange={(e) => setLoading(e.currentTarget.value)}
-            />
-              Loading
-          </Label>
-
-          <Label width={[1 / 2, 1 / 4]} p={2}>
-            <Checkbox
-              type={'checkbox'}
-              placeholder={'packing checkbox'}
-              onChange={(e) => setPacking(e.currentTarget.value)}
-            />
-            Packing
-          </Label>
-          <Box px={2} ml='auto'>
-            <Button onClick={submitHandler}>
-              Submit Order
-            </Button>
-          </Box>
-        </Flex>
-      </Box> */}
     </>
   );
 }

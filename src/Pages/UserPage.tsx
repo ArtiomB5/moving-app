@@ -1,10 +1,24 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { CustomButton } from './../Components/CustomButton';
 
-export const UserPage = () => {
+interface IUserPageProps {
+  logoutHandler: () => void
+}
+
+export const UserPage: FC<IUserPageProps> = ({ logoutHandler }) => {
+  const buttonHandler = () => {
+    localStorage.removeItem('token')
+    if (!localStorage.getItem('token')) {
+      logoutHandler()
+    }
+  }
   return (
     <div>
-      <div>
-        user@email.com
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+        <div>
+          user@email.com
+        </div>
+        <CustomButton handler={buttonHandler} title={'Logout'} />
       </div>
       <h3>Orders</h3>
       <div>

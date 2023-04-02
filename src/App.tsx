@@ -15,6 +15,7 @@ function App() {
     const [isOpenUserPage, setIsOpenUserPage] = useState(false)
 
     const onSubmitHandler = () => setIsOpenLogin(false)
+    const logoutHandler = () => setIsOpenUserPage(false)
 
     const about = `More About Mayflower
     Mayflower is involved in several organizations as part of dedication to our customers, employees and communities. Mayflower and its agents across the United States are humbled to support our veterans by participating in the U.S. Chamber of Commerce Hiring Our Heroes. Our agents have hired a number of veterans as a result.
@@ -48,7 +49,7 @@ function App() {
                         <Auth onSubmitHandler={onSubmitHandler} />
                     </CustomModal>}
                     {token && <CustomModal buttonTitle={'Account'} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
-                        <UserPage />
+                        <UserPage logoutHandler={logoutHandler}/>
                     </CustomModal>}
                 </Box>
             </Flex>
