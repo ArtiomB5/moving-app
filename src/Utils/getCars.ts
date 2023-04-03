@@ -1,0 +1,1 @@
+export const getCars = () => [4.5, 5.5, 6, 8, 10, 11, 20]

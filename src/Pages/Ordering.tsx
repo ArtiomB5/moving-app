@@ -1,9 +1,8 @@
-import { Checkbox, Input, Label, Select } from "@rebass/forms";
+import { Checkbox, Input, Select } from "@rebass/forms";
 import { ChangeEvent, FC, useState } from "react";
-import { Button } from "rebass";
 import { CustomButton } from './../Components/CustomButton';
-
-const cars = [4.5, 5.5, 6, 8, 10, 11, 20]
+import { getCars } from "../Utils/getCars";
+import { getPrice } from "../Utils/getPrice";
 
 interface IOrderingProps {
   onSubmitHandler: () => void,
@@ -14,9 +13,9 @@ interface IOrderingProps {
 export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance }) => {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
-  const [loading, setLoading] = useState('0')
-  const [packing, setPacking] = useState('0')
-  const [carLoadCapacity, setCarLoadCapacity] = useState(cars[2])
+  const [loading, setLoading] = useState('1')
+  const [packing, setPacking] = useState('1')
+  const [carLoadCapacity, setCarLoadCapacity] = useState(getCars()[2])
 
   const submitHandler = () => {
     console.log({
@@ -51,34 +50,39 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
             id='carLoadCapacity'
             name='carLoadCapacity'
             defaultValue={carLoadCapacity}
-            style={{padding: '0 100px'}}
+            style={{ padding: '0 100px' }}
             onChange={e => {
               setCarLoadCapacity(Number(e.currentTarget.value))
             }}
           >
-            {cars.map(car => <option key={car}>{car}</option>)}
+            {getCars().map(car => <option key={car}>{car}</option>)}
           </Select>
         </div>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <span>Loading:</span>
-            <Checkbox
+            <input
+              value={loading}
               type={'checkbox'}
-              placeholder={'loading checkbox'}
-              onChange={(e) => setLoading(e.currentTarget.value)}
+              onClick={() => setLoading(pv => pv === '0' ? '1' : '0')}
+              style={{height: '20px', width: '20px'}}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
             <span>Packing:</span>
-            <Checkbox
+            <input
+              value={packing}
               type={'checkbox'}
-              placeholder={'packing checkbox'}
-              onChange={(e) => setPacking(e.currentTarget.value)}
+              onClick={() => setPacking(pv => pv === '0' ? '1' : '0')}
+              style={{height: '20px', width: '20px'}}
             />
           </div>
         </div>
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <h3>{`${getPrice(carLoadCapacity, distance)} ТГ`}</h3>
+        </div>
 
-        <CustomButton handler={submitHandler} title={'Submit Order'} isDisabled={date === '' || time === ''}/>
+        <CustomButton handler={submitHandler} title={'Submit Order'} isDisabled={date === '' || time === ''} />
       </div >
     </>
   );
