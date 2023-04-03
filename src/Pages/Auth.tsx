@@ -35,7 +35,8 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
         <span>Password:</span>
         <Input type={"password"} value={pass} onChange={e => setPass(e.currentTarget.value)} />
       </div>
-      <CustomButton handler={submitHandler} title={'Submit'} />
+
+      <CustomButton handler={submitHandler} title={'Submit'} isDisabled={email === '' || pass === ''}/>
     </div>
   );
 }

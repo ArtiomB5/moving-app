@@ -7,14 +7,19 @@ import { Button } from 'rebass';
 import { CustomModal } from './CustomModal';
 import { Ordering } from '../Pages/Ordering';
 import { CustomButton } from './CustomButton';
+import { Auth } from '../Pages/Auth';
 
 interface IMapProps {
   geolocation: [number, number]
+  isOrdering: boolean
+  setIsOrdering: (param: boolean) => void
 }
 
 type PointsStateType = [][] | [number[], number[] | []]
 
-export const Map: FC<IMapProps> = ({ geolocation }) => {
+const token = localStorage.getItem("token");
+
+export const Map: FC<IMapProps> = ({ geolocation, isOrdering, setIsOrdering }) => {
   const [points, setPoints] = useState<PointsStateType>([[], []])
   const [isOpenOrdering, setIsOpenOrdering] = useState(false)
   const [distance, setDistance] = useState(0)
@@ -98,47 +103,49 @@ export const Map: FC<IMapProps> = ({ geolocation }) => {
     }
   }, [points]);
 
-  const token = localStorage.getItem("token");
-
   const clearHandler = () => {
     setPoints([[], []])
   }
 
   return (
     <>
-      {points[0].length > 0 && <div style={{
+      {<div style={{
         padding: "5px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
         alignItems: "center",
-        gap: "5px"
+        gap: "5px",
+        minHeight: "86px"
       }}>
-        <div>
-          {points[0].length > 0
-            && <Point coords={points[0]} pointName={"Point A"} />}
+        {points[0].length === 0 && <h3>Welcom! Choose your moving route!</h3>}
+        {points[0].length > 0 && <>
+          <div>
+            {points[0].length > 0
+              && <Point coords={points[0]} pointName={"Point A"} />}
 
-          {points[1].length > 0
-            && <Point coords={points[1]} pointName={"Point B"} />}
-        </div>
-        <div style={{width: '100%', display: 'flex', justifyContent: 'center', gap: '10px'}}>
-          {points[0].length > 0
-            && <CustomButton handler={clearHandler} title={'Clear Points'} isPrimary={false}/>}
+            {points[1].length > 0
+              && <Point coords={points[1]} pointName={"Point B"} />}
+          </div>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+            {points[0].length > 0
+              && <CustomButton handler={clearHandler} title={'Clear Points'} isPrimary={false} />}
 
-          {points[0].length > 0
-            && points[1].length > 0
-            && <>
-              {token && <CustomModal
+            {points[0].length > 0
+              && points[1].length > 0
+              && <CustomModal
                 buttonTitle={'Ordering'}
                 isOpen={isOpenOrdering}
                 setIsOpen={setIsOpenOrdering}
                 buttonType={'button'}
               >
-                <Ordering onSubmitHandler={onSubmitOrderingHandler} distance={distance} points={points} />
+                <>
+                  {isOrdering && <Ordering onSubmitHandler={onSubmitOrderingHandler} distance={distance} points={points} />}
+                  {!isOrdering && <Auth onSubmitHandler={() => { setIsOrdering(true) }} />}
+                </>
               </CustomModal>}
-              {!token && 'Need Auth'}
-            </>}
-        </div>
+          </div>
+        </>}
       </div>}
 
       <div style={{ width: '100%', height: '100%' }}>

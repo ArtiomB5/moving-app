@@ -78,7 +78,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
           </div>
         </div>
 
-        <CustomButton handler={submitHandler} title={'Submit Order'} />
+        <CustomButton handler={submitHandler} title={'Submit Order'} isDisabled={date === '' || time === ''}/>
       </div >
     </>
   );

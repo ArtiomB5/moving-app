@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { IPoint } from '../TypesAndInterfaces';
 import { Text } from 'rebass';
+import { Loading } from './Loading';
 
 export const Point: FC<IPoint> = ({ coords, pointName }) => {
   const [address, setAddress] = useState("")
@@ -24,7 +25,7 @@ export const Point: FC<IPoint> = ({ coords, pointName }) => {
   return (
     <>
       {typeof coords[0] !== "number" || address === "" 
-      ? <Text style={{color: 'red'}}>Loading</Text>
+      ? <Loading />
       : <Text>{`${pointName} - ${address}`}</Text>}
     </>
   );
