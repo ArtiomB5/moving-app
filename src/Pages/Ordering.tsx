@@ -137,9 +137,9 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
               const valueNumber = Number(value)
               if (Number(value) >= 40) {
                 setNumberOfPackers('40')
-                setPackingPrice(getLoadingPrice(carLoadCapacity, 40, 0.35, 900))
+                setPackingPrice(getLoadingPrice(carLoadCapacity, 40, 0.35, 2100))
               } else {
-                setPackingPrice(getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 900))
+                setPackingPrice(getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 2100))
                 setNumberOfPackers(value)
               }
             }}
