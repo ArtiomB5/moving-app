@@ -1,8 +1,9 @@
-import { Checkbox, Input, Select } from "@rebass/forms";
-import { ChangeEvent, FC, useState } from "react";
+import { Input, Select } from "@rebass/forms";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { CustomButton } from './../Components/CustomButton';
 import { getCars } from "../Utils/getCars";
-import { getPrice } from "../Utils/getPrice";
+import { getMovingPrice } from "../Utils/getMovingPrice";
+import { getLoadingPrice } from "../Utils/getLoadingPrice";
 
 interface IOrderingProps {
   onSubmitHandler: () => void,
@@ -13,9 +14,18 @@ interface IOrderingProps {
 export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance }) => {
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
-  const [loading, setLoading] = useState('1')
-  const [packing, setPacking] = useState('1')
+  const [loading, setLoading] = useState('0')
+  const [packing, setPacking] = useState('0')
+  const [numberOfMovers, setNumberOfMovers] = useState('0')
+  const [numberOfPackers, setNumberOfPackers] = useState('0')
   const [carLoadCapacity, setCarLoadCapacity] = useState(getCars()[2])
+  const [movingPrice, setMovingPrice] = useState(0)
+  const [loadingPrice, setLoadingPrice] = useState(0)
+  const [packingPrice, setPackingPrice] = useState(0)
+
+  useEffect(() => {
+    setMovingPrice(getMovingPrice(carLoadCapacity, distance))
+  }, [carLoadCapacity, distance])
 
   const submitHandler = () => {
     console.log({
@@ -25,7 +35,9 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
       packing,
       carLoadCapacity,
       points,
-      distance
+      distance,
+      numberOfMovers,
+      numberOfPackers
     })
   }
 
@@ -50,7 +62,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
             id='carLoadCapacity'
             name='carLoadCapacity'
             defaultValue={carLoadCapacity}
-            style={{ padding: '0 100px' }}
+            style={{ padding: '0 100px', background: 'none' }}
             onChange={e => {
               setCarLoadCapacity(Number(e.currentTarget.value))
             }}
@@ -60,26 +72,82 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
         </div>
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <span>Loading:</span>
+            <span style={{ width: '60px' }}>Loading:</span>
             <input
               value={loading}
               type={'checkbox'}
-              onClick={() => setLoading(pv => pv === '0' ? '1' : '0')}
-              style={{height: '20px', width: '20px'}}
-            />
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <span>Packing:</span>
-            <input
-              value={packing}
-              type={'checkbox'}
-              onClick={() => setPacking(pv => pv === '0' ? '1' : '0')}
-              style={{height: '20px', width: '20px'}}
+              onClick={() => setLoading(pv => {
+                if (pv === '0') {
+                  return '1'
+                } else {
+                  setLoadingPrice(0)
+                  setNumberOfMovers('0')
+                  return '0'
+                }
+              })}
+              style={{ height: '20px', width: '20px' }}
             />
           </div>
         </div>
+        {loading === '1' && <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ width: '140px' }}>Number of movers:</span>
+          <input
+            type={'number'}
+            value={numberOfMovers}
+            onChange={(e) => {
+              const value = e.currentTarget.value
+              const valueNumber = Number(value)
+              if (Number(value) >= 40) {
+                setNumberOfMovers('40')
+                setLoadingPrice(getLoadingPrice(carLoadCapacity, 40, 0.35, 3000))
+              } else {
+                setLoadingPrice(getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 3000))
+                setNumberOfMovers(value)
+              }
+            }}
+            style={{ height: '20px', width: '70px', textAlign: 'center' }}
+          />
+        </div>}
+        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <span style={{ width: '60px' }}>Packing:</span>
+            <input
+              value={packing}
+              type={'checkbox'}
+              onClick={() => setPacking(pv => {
+                if (pv === '0') {
+                  return '1'
+                } else {
+                  setPackingPrice(0)
+                  setNumberOfPackers('0')
+                  return '0'
+                }
+              })}
+              style={{ height: '20px', width: '20px' }}
+            />
+          </div>
+        </div>
+        {packing === '1' && <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+          <span style={{ width: '140px' }}>Number of packers:</span>
+          <input
+            type={'number'}
+            value={numberOfPackers}
+            onChange={(e) => {
+              const value = e.currentTarget.value
+              const valueNumber = Number(value)
+              if (Number(value) >= 40) {
+                setNumberOfPackers('40')
+                setPackingPrice(getLoadingPrice(carLoadCapacity, 40, 0.35, 900))
+              } else {
+                setPackingPrice(getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 900))
+                setNumberOfPackers(value)
+              }
+            }}
+            style={{ height: '20px', width: '70px', textAlign: 'center' }}
+          />
+        </div>}
         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-          <h3>{`${getPrice(carLoadCapacity, distance)} ТГ`}</h3>
+          <h3>{`${Math.round(movingPrice + loadingPrice + packingPrice)} ТГ`}</h3>
         </div>
 
         <CustomButton handler={submitHandler} title={'Submit Order'} isDisabled={date === '' || time === ''} />
