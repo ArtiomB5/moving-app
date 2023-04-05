@@ -1,7 +1,7 @@
-import React, { FC, useState, useEffect } from 'react';
-import { IPoint } from '../TypesAndInterfaces';
-import { Text } from 'rebass';
-import { Loading } from './Loading';
+import React, { FC, useState, useEffect } from "react";
+import { IPoint } from "../TypesAndInterfaces";
+import { Text } from "rebass";
+import { Loading } from "./Loading";
 
 export const Point: FC<IPoint> = ({ coords, pointName }) => {
   const [address, setAddress] = useState("")

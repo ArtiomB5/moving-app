@@ -1,6 +1,6 @@
-import classNames from 'classnames/bind';
-import { FC } from 'react';
-import styles from './CustomButton.module.css';
+import classNames from "classnames/bind";
+import { FC } from "react";
+import styles from "./CustomButton.module.css";
 
 interface ICustomButton {
   handler: () => void,

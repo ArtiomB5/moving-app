@@ -1,0 +1,6 @@
+.logout {
+    display: flex; 
+    flex-direction: row; 
+    justify-content: space-around; 
+    align-tems: center;
+}
