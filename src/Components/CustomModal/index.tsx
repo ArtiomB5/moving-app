@@ -1,8 +1,9 @@
-import React, { FC, useEffect } from 'react';
+import { FC } from 'react';
 import Modal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
-import { Button, Link } from 'rebass';
-import { CustomButton } from './CustomButton';
+import { Link } from 'rebass';
+import { CustomButton } from '../CustomButton';
+import styles from './CustomModal.module.css'
 
 interface IAuthProps {
   buttonTitle: string
@@ -10,6 +11,14 @@ interface IAuthProps {
   isOpen: boolean
   setIsOpen: (param: boolean) => void
   buttonType?: 'button' | 'link' | 'none'
+}
+
+const rebassSx = {
+  display: 'inline-block',
+  px: 2,
+  py: 1,
+  color: 'inherit',
+  cursor: 'pointer'
 }
 
 export const CustomModal: FC<IAuthProps> = ({ buttonTitle, children, isOpen, setIsOpen, buttonType = 'link' }) => {
@@ -21,20 +30,12 @@ export const CustomModal: FC<IAuthProps> = ({ buttonTitle, children, isOpen, set
     <>
       {buttonType === 'link' && <Link variant='nav'
         onClick={openModal}
-        sx={{
-          display: 'inline-block',
-          px: 2,
-          py: 1,
-          color: 'inherit',
-          cursor: 'pointer'
-        }}>
+        sx={rebassSx}>
         {buttonTitle}
       </Link>}
       {buttonType === 'button' && <CustomButton handler={openModal} title={buttonTitle}/>}
       {isOpen && <Modal open={isOpen} onClose={closeModal} center>
-        <div style={{
-          padding: "30px 5px 10px 5px"
-        }}>
+        <div className={styles.modal}>
           {children}
         </div>
       </Modal>}

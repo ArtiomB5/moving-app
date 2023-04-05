@@ -1,0 +1,7 @@
+.auth {
+  minheight: 200px;
+  display: flex;
+  flexdirection: column;
+  justifycontent: space-around;
+  alignitems: center;
+}

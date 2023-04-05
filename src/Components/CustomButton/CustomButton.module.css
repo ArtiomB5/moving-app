@@ -1,0 +1,22 @@
+.button {
+  cursor: pointer;
+  border: 2px solid rgba(155, 206, 93, 1);
+  color: black;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 14px
+}
+
+.primary {
+  background-color: rgba(155, 206, 93, 1);
+  color: #fff;
+}
+
+.secondary {
+  background-color: #fff;
+}
+
+.disabledBg {
+  border: 2px solid #808080;
+  background-color: #808080;
+}

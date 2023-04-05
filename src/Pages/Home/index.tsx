@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Map } from "../Components/Map";
-import { Box, Flex, Text } from 'rebass';
-import { CustomModal } from '../Components/CustomModal';
-import { Loading } from '../Components/Loading';
-import { Auth } from './Auth';
-import { UserPage } from './UserPage';
+import { useEffect, useState } from "react";
+import { Map } from "../../Components/Map";
+import { Box, Flex, Text } from "rebass";
+import { CustomModal } from "../../Components/CustomModal";
+import { Loading } from "../../Components/Loading";
+import { Auth } from "../Auth";
+import { UserPage } from "../UserPage";
+import styles from "./Home.module.css";
 
 export const Home = () => {
   const token = localStorage.getItem("token");
@@ -47,35 +48,30 @@ export const Home = () => {
   }
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div className={styles.home}>
       <Flex
         px={2}
-        color='white'
-        bg='black'
-        alignItems='center'
-        style={{
-          background: "linear-gradient(90deg, rgba(111,188,68,1) 0%, rgba(155,206,93,1) 100%)",
-          color: "#221F1F",
-          fontSize: "3vh",
-          fontWeight: "600",
-        }}
+        color="white"
+        bg="black"
+        alignItems="center"
+        className={styles.wrapper}
       >
-        <img src="https://www.stickers-factory.com/media/catalog/product/cache/1/image/1000x/040ec09b1e35df139433887a97daa66f/0/4/04358_00.png" alt="logo" width={'ait'} height={'40px'} />
-        <Text p={2} fontWeight='bold'>MOVING</Text>
-        <Box mx='auto' />
+        <img src="https://www.stickers-factory.com/media/catalog/product/cache/1/image/1000x/040ec09b1e35df139433887a97daa66f/0/4/04358_00.png" alt="logo" width={"ait"} height={"40px"} />
+        <Text p={2} fontWeight="bold">MOVING</Text>
+        <Box mx="auto" />
         <Box>
-          <CustomModal buttonTitle={'About'} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
+          <CustomModal buttonTitle={"About"} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
             <div>{about}</div>
           </CustomModal>
-          {!token && <CustomModal buttonTitle={'Login'} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
+          {!token && <CustomModal buttonTitle={"Login"} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
             <Auth onSubmitHandler={onSubmitHandler} />
           </CustomModal>}
-          {token && <CustomModal buttonTitle={'Account'} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
+          {token && <CustomModal buttonTitle={"Account"} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
             <UserPage logoutHandler={logoutHandler} />
           </CustomModal>}
         </Box>
       </Flex>
-      {geolocation === null && <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+      {geolocation === null && <div className={styles.loading}>
         <Loading />
       </div>}
       {Array.isArray(geolocation) && <Map geolocation={geolocation} setIsOrdering={setIsOrdering} isOrdering={isOrdering} />}
