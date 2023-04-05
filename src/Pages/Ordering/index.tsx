@@ -109,7 +109,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
 
       {loading === "1"
         && <div className={styles.serviceCount}>
-          <span style={{ width: "140px" }}>Number of movers:</span>
+          <span className={styles.servicesCountTitle}>Number of movers:</span>
           <input
             type={"number"}
             value={numberOfMovers}
@@ -129,7 +129,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
         </div>}
       {packing === "1"
         && <div className={styles.serviceCount}>
-          <span style={{ width: "140px" }}>Number of packers:</span>
+          <span className={styles.servicesCountTitle}>Number of packers:</span>
           <input
             type={"number"}
             value={numberOfPackers}

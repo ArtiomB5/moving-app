@@ -25,6 +25,10 @@
     width: 60px;
 }
 
+.servicesCountTitle {
+    width: 140px;
+}
+
 .servicesInput {
     width: 20px;
     height: 20px;
