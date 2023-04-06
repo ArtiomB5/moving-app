@@ -5,6 +5,7 @@ import { getCars } from "../../Utils/getCars";
 import { getMovingPrice } from "../../Utils/getMovingPrice";
 import { getLoadingPrice } from "../../Utils/getLoadingPrice";
 import styles from "./Ordering.module.css";
+import { useTranslation } from "react-i18next";
 
 interface IOrderingProps {
   onSubmitHandler: () => void,
@@ -28,6 +29,8 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
     setMovingPrice(getMovingPrice(carLoadCapacity, distance))
   }, [carLoadCapacity, distance])
 
+  const { t } = useTranslation("common");
+
   const submitHandler = () => {
     console.log({
       date,
@@ -45,19 +48,19 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
   return (
     <div className={styles.wrapper}>
       <div className={styles.cell}>
-        <span>Date:</span>
+        <span>{`${t("Date")}:`}</span>
         <Input type="date" placeholder={"Choose Moving Date"} value={date} onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setDate(e.currentTarget.value)
         }} />
       </div>
       <div className={styles.cell}>
-        <span>Time:</span>
+        <span>{`${t("Time")}:`}</span>
         <Input type="time" placeholder={"Choose Moving Time"} value={time} onChange={(e: ChangeEvent<HTMLInputElement>) => {
           setTime(e.currentTarget.value)
         }} />
       </div>
       <div className={styles.cell}>
-        <span>Car Load Capacity, tonnes:</span>
+        <span>{`${t("Car Load Capacity, tonnes")}:`}</span>
         <Select
           id="carLoadCapacity"
           name="carLoadCapacity"
@@ -72,7 +75,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
       </div>
       <div className={styles.additionalServices}>
         <div>
-          <span className={styles.servicesTitle}>Loading:</span>
+          <span className={styles.servicesTitle}>{`${t("Loading")}:`}</span>
           <input
             value={loading}
             type={"checkbox"}
@@ -89,7 +92,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
           />
         </div>
         <div>
-          <span className={styles.servicesTitle}>Packing:</span>
+          <span className={styles.servicesTitle}>{`${t("Packing")}:`}</span>
           <input
             value={packing}
             type={"checkbox"}
@@ -109,7 +112,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
 
       {loading === "1"
         && <div className={styles.serviceCount}>
-          <span className={styles.servicesCountTitle}>Number of movers:</span>
+          <span className={styles.servicesCountTitle}>{`${t("Number of movers")}:`}</span>
           <input
             type={"number"}
             value={numberOfMovers}
@@ -129,7 +132,7 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
         </div>}
       {packing === "1"
         && <div className={styles.serviceCount}>
-          <span className={styles.servicesCountTitle}>Number of packers:</span>
+          <span className={styles.servicesCountTitle}>{`${t("Number of packers")}:`}</span>
           <input
             type={"number"}
             value={numberOfPackers}
@@ -147,10 +150,10 @@ export const Ordering: FC<IOrderingProps> = ({ onSubmitHandler, points, distance
             className={styles.serviceInput}
           />
         </div>}
-      <h3 className={styles.countResult}>{`${Math.round(distance * 10) / 10} Км`}</h3>
+      <h3 className={styles.countResult}>{`${Math.round(distance * 10) / 10} ${t("Km")}`}</h3>
       <h3 className={styles.countResult}>{`${Math.round(movingPrice + loadingPrice + packingPrice)} ТГ`}</h3>
 
-      <CustomButton handler={submitHandler} title={"Submit Order"} isDisabled={date === "" || time === ""} />
+      <CustomButton handler={submitHandler} title={`${t("Submit Order")}`} isDisabled={date === "" || time === ""} />
     </div >
   );
 }

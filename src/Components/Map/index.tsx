@@ -7,7 +7,8 @@ import { CustomModal } from "../CustomModal";
 import { Ordering } from "../../Pages/Ordering";
 import { CustomButton } from "../CustomButton";
 import { Auth } from "../../Pages/Auth";
-import styles from "./Map.module.css"
+import styles from "./Map.module.css";
+import { useTranslation } from 'react-i18next';
 
 interface IMapProps {
   geolocation: [number, number]
@@ -23,6 +24,8 @@ export const Map: FC<IMapProps> = ({ geolocation, isOrdering, setIsOrdering }) =
   const [distance, setDistance] = useState(0)
 
   const onSubmitOrderingHandler = () => setIsOpenOrdering(false)
+
+  const { t } = useTranslation('common');
 
   const getDistance = (e: any) => {
     let distance = 0
@@ -102,7 +105,7 @@ export const Map: FC<IMapProps> = ({ geolocation, isOrdering, setIsOrdering }) =
   return (
     <>
       {<div className={styles.map}>
-        {points[0].length === 0 && <h3>Welcom! Choose your moving route!</h3>}
+        {points[0].length === 0 && <h3>{t("Welcome! Build a route to transport goods!")}</h3>}
         {points[0].length > 0 && <>
           <div>
             {points[0].length > 0

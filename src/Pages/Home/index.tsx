@@ -7,6 +7,7 @@ import { Auth } from "../Auth";
 import { UserPage } from "../UserPage";
 import styles from "./Home.module.css";
 import { About } from "../About";
+import { useTranslation } from "react-i18next";
 
 export const Home = () => {
   const token = localStorage.getItem("token");
@@ -16,6 +17,9 @@ export const Home = () => {
   const [isOpenLogin, setIsOpenLogin] = useState(false)
   const [isOpenAbout, setIsOpenAbout] = useState(false)
   const [isOpenUserPage, setIsOpenUserPage] = useState(false)
+  const [isOpenLng, setIsOpenLng] = useState(false)
+
+  const { t, i18n } = useTranslation("common");
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(success, error);
@@ -43,6 +47,11 @@ export const Home = () => {
     setGeolocation(JSON.stringify(err))
   }
 
+  const changeLangHandler = (lang: "kk" | "en" | "ru") => {
+    i18n.changeLanguage(lang);
+    setIsOpenLng(false);
+  }
+
   return (
     <div className={styles.home}>
       <Flex
@@ -56,13 +65,20 @@ export const Home = () => {
         <Text p={2} fontWeight="bold">MOVING</Text>
         <Box mx="auto" />
         <Box>
-          <CustomModal buttonTitle={"About"} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
+          <CustomModal buttonTitle={i18n.language.toUpperCase()} isOpen={isOpenLng} setIsOpen={setIsOpenLng}>
+            <>
+              <button onClick={() => changeLangHandler("kk")}>KK</button>
+              <button onClick={() => changeLangHandler("en")}>EN</button>
+              <button onClick={() => changeLangHandler("ru")}>RU</button>
+            </>
+          </CustomModal>
+          <CustomModal buttonTitle={t("About")} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
             <About />
           </CustomModal>
-          {!token && <CustomModal buttonTitle={"Login"} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
+          {!token && <CustomModal buttonTitle={t("Login")} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
             <Auth onSubmitHandler={onSubmitHandler} />
           </CustomModal>}
-          {token && <CustomModal buttonTitle={"Account"} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
+          {token && <CustomModal buttonTitle={t("Account")} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
             <UserPage logoutHandler={logoutHandler} />
           </CustomModal>}
         </Box>
