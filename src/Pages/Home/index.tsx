@@ -6,6 +6,7 @@ import { Loading } from "../../Components/Loading";
 import { Auth } from "../Auth";
 import { UserPage } from "../UserPage";
 import styles from "./Home.module.css";
+import { About } from "../About";
 
 export const Home = () => {
   const token = localStorage.getItem("token");
@@ -30,11 +31,6 @@ export const Home = () => {
 
   const onSubmitHandler = () => setIsOpenLogin(false)
   const logoutHandler = () => setIsOpenUserPage(false)
-
-  const about = `More About Mayflower
-    Mayflower is involved in several organizations as part of dedication to our customers, employees and communities. Mayflower and its agents across the United States are humbled to support our veterans by participating in the U.S. Chamber of Commerce Hiring Our Heroes. Our agents have hired a number of veterans as a result.
-    
-    We are also proud to be ISO Certified and is a Certified ProMover which is a certification, granted by the American Moving and Storage Association. AMSA works to provide strong and effective advocacy for customers utilizing moving and storage services, including helping people to identify professional and reliable moving companies.`
 
   const success = (pos: GeolocationPosition) => {
     console.log(pos)
@@ -61,7 +57,7 @@ export const Home = () => {
         <Box mx="auto" />
         <Box>
           <CustomModal buttonTitle={"About"} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
-            <div>{about}</div>
+            <About />
           </CustomModal>
           {!token && <CustomModal buttonTitle={"Login"} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
             <Auth onSubmitHandler={onSubmitHandler} />

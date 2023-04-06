@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { IPoint } from "../TypesAndInterfaces";
 import { Text } from "rebass";
 import { Loading } from "./Loading";
