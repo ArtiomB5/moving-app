@@ -1,92 +1,62 @@
-import { useEffect, useState } from "react";
-import { Map } from "../../Components/Map";
-import { Box, Flex, Text } from "rebass";
-import { CustomModal } from "../../Components/CustomModal";
-import { Loading } from "../../Components/Loading";
-import { Auth } from "../Auth";
-import { UserPage } from "../UserPage";
-import styles from "./Home.module.css";
-import { About } from "../About";
-import { useTranslation } from "react-i18next";
+import { Layout } from '../../Components/Layout';
+import { CustomButton } from '../../Components/CustomButton';
+import { useState } from 'react';
 
-export const Home = () => {
-  const token = localStorage.getItem("token");
+const Home = () => {
+    const [imgs, setImgs] = useState([false, false, false])
+    console.log(imgs)
+    return <>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center", gap: "15px", padding: "15px 0" }}>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "15px", textAlign: "center" }}>
+                <div>
+                    <h2>AFFORDABLE AND RELIABLE MOVING SERVICES</h2>
+                    <div>
+                        Join our list of satisfied customers. We are your trusted and reliable Kazakhstan moving company.
+                    </div>
+                </div>
+                <CustomButton title={"Order moving now!".toUpperCase()} handler={() => alert("Перевезти")} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
+                <img src={require("./packing.webp")} alt={"Custom Wrapping and Packing"} width={"20%"} height={"auto"} loading={"lazy"} onLoad={() => setImgs(pv => [true, pv[1], pv[2]])}/>
+                <div style={{ width: "50%" }}>
+                    <h3>
+                        Custom Wrapping and Packing
+                    </h3>
+                    <ul>
+                        <li>Mattresses</li>
+                        <li>Flat screens</li>
+                        <li>Couches and chairs</li>
+                        <li>Computers and electronics</li>
+                        <li>Lamps and light bulbs</li>
+                        <li>Hanging clothes</li>
+                        <li>Paintings and small mirrors</li>
+                    </ul>
+                </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
+                <img src={require("./moving.webp")} alt={"Let’s make your move pain-free"} width={"20%"} height={"auto"} loading={"lazy"} onLoad={() => setImgs(pv => [pv[0], true, pv[2]])}/>
+                <div style={{ width: "50%" }}>
+                    <h3>Let’s make your move pain-free</h3>
+                    <div>
+                        We treat all our customers with the utmost care and attention. Whether you’re moving long distance or within the Kazakhstan, we’ve got a proven track record for providing professional, friendly, and timely moving service. It’s no wonder so many of our customers consider us the best among moving companies KZ.
+                    </div>
+                </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
+                <img src={require("./service.webp")} alt={"We take pride in providing the best Kazakhstan moving service"} width={"20%"} height={"auto"} loading={"lazy"} onLoad={() => setImgs(pv => [pv[0], pv[1], true])}/>
+                <div style={{ width: "50%" }}>
+                    <h3>
+                        We take pride in providing the best Kazakhstan moving service
+                    </h3>
+                    <div>
+                        From the moment you get in touch with us to the unpacking of the last item in the final box, our experienced team of our movers takes pride in providing seamless moving service for your household or business. We’re only happy if your transition is fast, efficient, stress and hustle-free.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </>;
+}
 
-  const [geolocation, setGeolocation] = useState<null | [number, number] | string>(null)
-  const [isOrdering, setIsOrdering] = useState(false)
-  const [isOpenLogin, setIsOpenLogin] = useState(false)
-  const [isOpenAbout, setIsOpenAbout] = useState(false)
-  const [isOpenUserPage, setIsOpenUserPage] = useState(false)
-  const [isOpenLng, setIsOpenLng] = useState(false)
-
-  const { t, i18n } = useTranslation("common");
-
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(success, error);
-  }, [])
-
-  useEffect(() => {
-    if (token) {
-      setIsOrdering(true)
-    } else {
-      setIsOrdering(false)
-    }
-  }, [token])
-
-  const onSubmitHandler = () => setIsOpenLogin(false)
-  const logoutHandler = () => setIsOpenUserPage(false)
-
-  const success = (pos: GeolocationPosition) => {
-    console.log(pos)
-    setGeolocation([pos.coords.longitude, pos.coords.latitude])
-  }
-
-  const error = (err: any) => {
-    console.log("success_err", err)
-    console.log("success_err_type", typeof err)
-    setGeolocation(JSON.stringify(err))
-  }
-
-  const changeLangHandler = (lang: "kk" | "en" | "ru") => {
-    i18n.changeLanguage(lang);
-    setIsOpenLng(false);
-  }
-
-  return (
-    <div className={styles.home}>
-      <Flex
-        px={2}
-        color="white"
-        bg="black"
-        alignItems="center"
-        className={styles.wrapper}
-      >
-        <img src="https://www.stickers-factory.com/media/catalog/product/cache/1/image/1000x/040ec09b1e35df139433887a97daa66f/0/4/04358_00.png" alt="logo" width={"ait"} height={"40px"} />
-        <Text p={2} fontWeight="bold">MOVING</Text>
-        <Box mx="auto" />
-        <Box>
-          <CustomModal buttonTitle={i18n.language.toUpperCase()} isOpen={isOpenLng} setIsOpen={setIsOpenLng}>
-            <>
-              <button onClick={() => changeLangHandler("kk")}>KK</button>
-              <button onClick={() => changeLangHandler("en")}>EN</button>
-              <button onClick={() => changeLangHandler("ru")}>RU</button>
-            </>
-          </CustomModal>
-          <CustomModal buttonTitle={t("About")} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
-            <About />
-          </CustomModal>
-          {!token && <CustomModal buttonTitle={t("Login")} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
-            <Auth onSubmitHandler={onSubmitHandler} />
-          </CustomModal>}
-          {token && <CustomModal buttonTitle={t("Account")} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
-            <UserPage logoutHandler={logoutHandler} />
-          </CustomModal>}
-        </Box>
-      </Flex>
-      {geolocation === null && <div className={styles.loading}>
-        <Loading />
-      </div>}
-      {Array.isArray(geolocation) && <Map geolocation={geolocation} setIsOrdering={setIsOrdering} isOrdering={isOrdering} />}
-    </div>
-  );
+export const HomePage = () => {
+    return <Layout content={<Home />} />;
 }

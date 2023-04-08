@@ -1,9 +1,10 @@
-.home {
+.map {
   width: 100vw;
   height: 100vh;
 }
 
 .wrapper {
+  width: 100%;
   background: linear-gradient(
     90deg,
     rgba(111, 188, 68, 1) 0%,
