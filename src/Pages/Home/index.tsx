@@ -1,24 +1,37 @@
 import { Layout } from '../../Components/Layout';
 import { CustomButton } from '../../Components/CustomButton';
-import { useState } from 'react';
+import classNames from "classnames/bind";
+import styles from "./Home.module.css"
+import service from "../../Images/service.webp";
+import moving from "../../Images/moving.webp";
+import packing from "../../Images/packing.webp";
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-    const [imgs, setImgs] = useState([false, false, false])
-    console.log(imgs)
+    const navigate = useNavigate();
+    const orderHandler = () => navigate("/route");
+
+    const cx = classNames.bind(styles);
+
+    const orderClass = cx({
+        commonStyle: true,
+        order: true
+    })
+
     return <>
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center", gap: "15px", padding: "15px 0" }}>
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: "15px", textAlign: "center" }}>
+        <div className={styles.wrapper}>
+            <div className={orderClass}>
                 <div>
                     <h2>AFFORDABLE AND RELIABLE MOVING SERVICES</h2>
                     <div>
                         Join our list of satisfied customers. We are your trusted and reliable Kazakhstan moving company.
                     </div>
                 </div>
-                <CustomButton title={"Order moving now!".toUpperCase()} handler={() => alert("Перевезти")} />
+                <CustomButton title={"Order moving now!".toUpperCase()} handler={orderHandler} />
             </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-                <img src={require("./packing.webp")} alt={"Custom Wrapping and Packing"} width={"20%"} height={"auto"} loading={"lazy"} onLoad={() => setImgs(pv => [true, pv[1], pv[2]])}/>
-                <div style={{ width: "50%" }}>
+            <div className={styles.commonStyle}>
+                <img src={packing} alt={"Custom Wrapping and Packing"} className={styles.image} loading={"lazy"} />
+                <div className={styles.text}>
                     <h3>
                         Custom Wrapping and Packing
                     </h3>
@@ -33,18 +46,18 @@ const Home = () => {
                     </ul>
                 </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-                <img src={require("./moving.webp")} alt={"Let’s make your move pain-free"} width={"20%"} height={"auto"} loading={"lazy"} onLoad={() => setImgs(pv => [pv[0], true, pv[2]])}/>
-                <div style={{ width: "50%" }}>
+            <div className={styles.commonStyle}>
+                <img src={moving} alt={"Let’s make your move pain-free"} className={styles.image} loading={"lazy"} />
+                <div className={styles.text}>
                     <h3>Let’s make your move pain-free</h3>
                     <div>
                         We treat all our customers with the utmost care and attention. Whether you’re moving long distance or within the Kazakhstan, we’ve got a proven track record for providing professional, friendly, and timely moving service. It’s no wonder so many of our customers consider us the best among moving companies KZ.
                     </div>
                 </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-                <img src={require("./service.webp")} alt={"We take pride in providing the best Kazakhstan moving service"} width={"20%"} height={"auto"} loading={"lazy"} onLoad={() => setImgs(pv => [pv[0], pv[1], true])}/>
-                <div style={{ width: "50%" }}>
+            <div className={styles.commonStyle}>
+                <img src={service} alt={"We take pride in providing the best Kazakhstan moving service"} className={styles.image} />
+                <div className={styles.text}>
                     <h3>
                         We take pride in providing the best Kazakhstan moving service
                     </h3>

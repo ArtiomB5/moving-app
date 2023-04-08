@@ -37,9 +37,6 @@ const RouteSelector = () => {
 
   return (
     <div className={styles.map}>
-      {geolocation === null && <div className={styles.loading}>
-        <Loading />
-      </div>}
       {Array.isArray(geolocation) && <Map geolocation={geolocation} setIsOrdering={setIsOrdering} isOrdering={isOrdering} />}
     </div>
   );
