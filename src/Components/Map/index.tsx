@@ -8,7 +8,7 @@ import { Ordering } from "../../Pages/Ordering";
 import { CustomButton } from "../CustomButton";
 import { Auth } from "../../Pages/Auth";
 import styles from "./Map.module.css";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 interface IMapProps {
   geolocation: [number, number]
@@ -25,7 +25,7 @@ export const Map: FC<IMapProps> = ({ geolocation, isOrdering, setIsOrdering }) =
 
   const onSubmitOrderingHandler = () => setIsOpenOrdering(false)
 
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const getDistance = (e: any) => {
     let distance = 0
@@ -96,7 +96,7 @@ export const Map: FC<IMapProps> = ({ geolocation, isOrdering, setIsOrdering }) =
     return () => {
       map && map.destroy()
     }
-  }, [points]);
+  }, [points, geolocation]);
 
   const clearHandler = () => {
     setPoints([[], []])
@@ -109,19 +109,19 @@ export const Map: FC<IMapProps> = ({ geolocation, isOrdering, setIsOrdering }) =
         {points[0].length > 0 && <>
           <div>
             {points[0].length > 0
-              && <Point coords={points[0]} pointName={"Point A"} />}
+              && <Point coords={points[0]} pointName={t("Point A")} />}
 
             {points[1].length > 0
-              && <Point coords={points[1]} pointName={"Point B"} />}
+              && <Point coords={points[1]} pointName={t("Point B")} />}
           </div>
           <div className={styles.buttons}>
             {points[0].length > 0
-              && <CustomButton handler={clearHandler} title={"Clear Points"} isPrimary={false} />}
+              && <CustomButton handler={clearHandler} title={t("Clear Points")} isPrimary={false} />}
 
             {points[0].length > 0
               && points[1].length > 0
               && <CustomModal
-                buttonTitle={"Ordering"}
+                buttonTitle={t("Ordering")}
                 isOpen={isOpenOrdering}
                 setIsOpen={setIsOpenOrdering}
                 buttonType={"button"}

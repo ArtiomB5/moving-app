@@ -1,17 +1,19 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from "react";
 import { Box, Flex, Text } from "rebass";
 import { CustomModal } from "../../Components/CustomModal";
 import { useTranslation } from "react-i18next";
-import styles from "../../Pages/RouteSelector/RouteSelector.module.css";
-import { About } from '../../Pages/About';
-import { UserPage } from './../../Pages/UserPage/index';
-import { Auth } from '../../Pages/Auth';
+import rs from "../../Pages/RouteSelector/RouteSelector.module.css";
+import { About } from "../../Pages/About";
+import { UserPage } from "./../../Pages/UserPage/index";
+import { Auth } from "../../Pages/Auth";
 import moving from "../../Images/moving.webp";
 import packing from "../../Images/packing.webp";
 import service from "../../Images/service.webp";
-import { PreloadImages } from '../PreloadImages';
-import { Loading } from '../Loading';
-import { useNavigate } from 'react-router-dom';
+import { PreloadImages } from "../PreloadImages";
+import { Loading } from "../Loading";
+import { useNavigate } from "react-router-dom";
+import styles from "./Layout.module.css";
+import { LangSelector } from "../../Pages/LangSelector";
 
 interface ILayout {
   content: JSX.Element
@@ -28,7 +30,7 @@ export const Layout: FC<ILayout> = ({ content }) => {
 
   useEffect(() => {
     if (!imgsStatus.includes(false)) {
-      sessionStorage.setItem('imgs', 'loaded');
+      sessionStorage.setItem("imgs", "loaded");
     }
   }, [imgsStatus])
 
@@ -42,29 +44,28 @@ export const Layout: FC<ILayout> = ({ content }) => {
   const onSubmitHandler = () => setIsOpenLogin(false)
   const logoutHandler = () => setIsOpenUserPage(false)
 
-  const changeLangHandler = (lang: "kk" | "en" | "ru") => {
+  const changeLangHandler = (lang: string) => {
     i18n.changeLanguage(lang);
+    localStorage.setItem("lang", lang)
     setIsOpenLng(false);
   }
+
+  console.log(i18n.language)
   return (
-    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "center" }}>
+    <div className={styles.wrapper}>
       <Flex
         px={2}
         color="white"
         bg="black"
         alignItems="center"
-        className={styles.wrapper}
+        className={rs.wrapper}
       >
         <img src="https://www.stickers-factory.com/media/catalog/product/cache/1/image/1000x/040ec09b1e35df139433887a97daa66f/0/4/04358_00.png" alt="logo" width={"ait"} height={"40px"} />
-        <Text p={2} fontWeight="bold" onClick={navigateToMain} style={{cursor: "pointer"}}>MOVING</Text>
+        <Text p={2} fontWeight="bold" onClick={navigateToMain} className={styles.header}>MOVING</Text>
         <Box mx="auto" />
         <Box>
           <CustomModal buttonTitle={i18n.language.toUpperCase()} isOpen={isOpenLng} setIsOpen={setIsOpenLng}>
-            <>
-              <button onClick={() => changeLangHandler("kk")}>KK</button>
-              <button onClick={() => changeLangHandler("en")}>EN</button>
-              <button onClick={() => changeLangHandler("ru")}>RU</button>
-            </>
+            <LangSelector langSelectHandler={changeLangHandler} langs={["kk", "ru", "en"]} currentLang={i18n.language}/>
           </CustomModal>
           <CustomModal buttonTitle={t("About")} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
             <About />
@@ -77,13 +78,9 @@ export const Layout: FC<ILayout> = ({ content }) => {
           </CustomModal>}
         </Box>
       </Flex>
-      <div style={{
-        height: "100%",
-        width: "100%",
-        overflowY: "auto",
-      }}>
+      <div className={styles.contentWrapper}>
         {!imgsStatus.includes(false) ? <>{content}</> : <Loading />}
-        <footer style={{ width: "100%", height: "50px" }}>
+        <footer className={styles.footer}>
           <PreloadImages preloadSetter={setImgsStatus} urlsArray={imgs} />
         </footer>
       </div>

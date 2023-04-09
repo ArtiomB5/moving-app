@@ -1,0 +1,22 @@
+.commonStyle {
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.unselectedButton {
+  color: "black";
+}
+
+.selectedButton {
+  color: rgba(155, 206, 93, 1);
+  text-decoration: underline;
+}
+
+.langsRow {
+  display: flex;
+  flexdirection: row;
+  justifycontet: center;
+  alignitems: center;
+  gap: 20px;
+}

@@ -1,4 +1,5 @@
-import React, { Dispatch, FC, SetStateAction } from 'react';
+import { Dispatch, FC, SetStateAction } from "react";
+import styles from "./PreloadImages.module.css";
 
 interface IPreloadImages {
   urlsArray: string[],
@@ -13,7 +14,7 @@ export const PreloadImages:FC<IPreloadImages> = ({urlsArray, preloadSetter}) => 
   })
   return (
     <>
-      {urlsArray.map((url, index) => <img src={url} key={url} alt={""} style={{width: "0.01px", height: "0.01px", padding: "0px", margin: "0px"}} onLoad={() => onLoadhandler(index)}/>)}
+      {urlsArray.map((url, index) => <img src={url} key={url} alt={"preload"} className={styles.img} onLoad={() => onLoadhandler(index)}/>)}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import styles from "./NotFound.module.css";
-import { CustomButton } from '../../Components/CustomButton/index';
+import { CustomButton } from "../../Components/CustomButton/index";
 import { useNavigate } from "react-router-dom";
 
 export const NotFound = () => {
