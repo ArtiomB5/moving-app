@@ -41,4 +41,17 @@ const RouteSelector = () => {
   );
 }
 
-export const RouteSelectorPage = () => <Layout content={<RouteSelector />}/>
+const jsonld = JSON.stringify(
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": "Moving Order",
+    "description": "Moving Order",
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "KZT",
+    }
+  }
+)
+
+export const RouteSelectorPage = () => <Layout content={<RouteSelector />} jsonld={jsonld} />

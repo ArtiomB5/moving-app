@@ -14,12 +14,14 @@ import { Loading } from "../Loading";
 import { useNavigate } from "react-router-dom";
 import styles from "./Layout.module.css";
 import { LangSelector } from "../../Pages/LangSelector";
+import { Seo } from "../SEO";
 
 interface ILayout {
-  content: JSX.Element
+  content: JSX.Element;
+  jsonld?: string;
 }
 
-export const Layout: FC<ILayout> = ({ content }) => {
+export const Layout: FC<ILayout> = ({ content, jsonld = '' }) => {
   const imgs = [moving, packing, service];
 
   const [isOpenLogin, setIsOpenLogin] = useState(false);
@@ -50,40 +52,42 @@ export const Layout: FC<ILayout> = ({ content }) => {
     setIsOpenLng(false);
   }
 
-  console.log(i18n.language)
   return (
-    <div className={styles.wrapper}>
-      <Flex
-        px={2}
-        color="white"
-        bg="black"
-        alignItems="center"
-        className={rs.wrapper}
-      >
-        <img src="https://www.stickers-factory.com/media/catalog/product/cache/1/image/1000x/040ec09b1e35df139433887a97daa66f/0/4/04358_00.png" alt="logo" width={"ait"} height={"40px"} />
-        <Text p={2} fontWeight="bold" onClick={navigateToMain} className={styles.header}>MOVING</Text>
-        <Box mx="auto" />
-        <Box>
-          <CustomModal buttonTitle={i18n.language.toUpperCase()} isOpen={isOpenLng} setIsOpen={setIsOpenLng}>
-            <LangSelector langSelectHandler={changeLangHandler} langs={["kk", "ru", "en"]} currentLang={i18n.language}/>
-          </CustomModal>
-          <CustomModal buttonTitle={t("About")} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
-            <About />
-          </CustomModal>
-          {!token && <CustomModal buttonTitle={t("Login")} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
-            <Auth onSubmitHandler={onSubmitHandler} />
-          </CustomModal>}
-          {token && <CustomModal buttonTitle={t("Account")} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
-            <UserPage logoutHandler={logoutHandler} />
-          </CustomModal>}
-        </Box>
-      </Flex>
-      <div className={styles.contentWrapper}>
-        {!imgsStatus.includes(false) ? <>{content}</> : <Loading />}
-        <footer className={styles.footer}>
-          <PreloadImages preloadSetter={setImgsStatus} urlsArray={imgs} />
-        </footer>
+    <>
+      <Seo jsonld={jsonld}/>
+      <div className={styles.wrapper}>
+        <Flex
+          px={2}
+          color="white"
+          bg="black"
+          alignItems="center"
+          className={rs.wrapper}
+        >
+          <img src="https://www.stickers-factory.com/media/catalog/product/cache/1/image/1000x/040ec09b1e35df139433887a97daa66f/0/4/04358_00.png" alt="logo" width={"ait"} height={"40px"} />
+          <Text p={2} fontWeight="bold" onClick={navigateToMain} className={styles.header}>MOVING</Text>
+          <Box mx="auto" />
+          <Box>
+            <CustomModal buttonTitle={i18n.language.toUpperCase()} isOpen={isOpenLng} setIsOpen={setIsOpenLng}>
+              <LangSelector langSelectHandler={changeLangHandler} langs={["kk", "ru", "en"]} currentLang={i18n.language} />
+            </CustomModal>
+            <CustomModal buttonTitle={t("About")} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
+              <About />
+            </CustomModal>
+            {!token && <CustomModal buttonTitle={t("Login")} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
+              <Auth onSubmitHandler={onSubmitHandler} />
+            </CustomModal>}
+            {token && <CustomModal buttonTitle={t("Account")} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>
+              <UserPage logoutHandler={logoutHandler} />
+            </CustomModal>}
+          </Box>
+        </Flex>
+        <div className={styles.contentWrapper}>
+          {!imgsStatus.includes(false) ? <>{content}</> : <Loading />}
+          <footer className={styles.footer}>
+            <PreloadImages preloadSetter={setImgsStatus} urlsArray={imgs} />
+          </footer>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

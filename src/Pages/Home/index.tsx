@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 
 const Home = () => {
     const { t } = useTranslation("common");
-    
+
     const navigate = useNavigate();
     const orderHandler = () => navigate("/route");
 
@@ -73,6 +73,30 @@ const Home = () => {
     </>;
 }
 
+const jsonld = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "MovingCompany",
+    "name": "Moving",
+    "telephone": "+77777777777",
+    "address": {
+        "@type": "PostalAddress",
+    },
+    "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+    }
+});
+
 export const HomePage = () => {
-    return <Layout content={<Home />} />;
+    return <Layout content={<Home />} jsonld={jsonld} />;
 }
