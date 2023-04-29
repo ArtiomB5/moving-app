@@ -1,7 +1,12 @@
 .auth {
-  minheight: 200px;
+  min-height: 200px;
   display: flex;
-  flexdirection: column;
-  justifycontent: space-around;
-  alignitems: center;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.error {
+  color: red;
+  font-weight: 600;
 }

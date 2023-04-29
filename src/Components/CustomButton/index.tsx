@@ -16,7 +16,7 @@ export const CustomButton: FC<ICustomButton> = ({ handler, title, isPrimary = tr
     button: true,
     primary: isPrimary,
     secondary: !isPrimary,
-    disabled: isDisabled,
+    disabledBg: isDisabled,
   });
 
   return <button

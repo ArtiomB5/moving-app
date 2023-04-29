@@ -11,7 +11,9 @@ export const UserPage: FC<IUserPageProps> = ({ logoutHandler }) => {
   const { t } = useTranslation("common");
 
   const buttonHandler = () => {
-    localStorage.removeItem("token")
+    localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
+
     if (!localStorage.getItem("token")) {
       logoutHandler()
     }
