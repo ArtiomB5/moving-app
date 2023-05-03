@@ -1,69 +1,77 @@
-type PricesType = { [key: string]: number };
-type CommonPricesType = { [key: string]: PricesType };
+import { CitiesType, cities } from "../Enums/cities";
 
-const pricesCarFrom0To1: PricesType = {
-  "500": 203,
-  "1000": 190,
-  "1500": 178,
-  "2000": 162,
-  "2500": 149,
-};
-
-const pricesCarFrom1To5: PricesType = {
-  "500": 229,
-  "1000": 211,
-  "1500": 196,
-  "2000": 180,
-  "2500": 173,
-};
-
-const pricesCarFrom5To10: PricesType = {
-  "500": 265,
-  "1000": 249,
-  "1500": 228,
-  "2000": 217,
-  "2500": 206,
-};
-
-const pricesCarFrom10To15: PricesType = {
-  "500": 276,
-  "1000": 251,
-  "1500": 234,
-  "2000": 215,
-  "2500": 201,
-};
-
-const pricesCarFrom15To20: PricesType = {
-  "500": 308,
-  "1000": 280,
-  "1500": 256,
-  "2000": 237,
-  "2500": 225,
-};
+type CommonPricesType = { [key: string]: number };
+type CitiesPricesType = { [key: string]: CommonPricesType };
 
 const commonPrices: CommonPricesType = {
-  "1": pricesCarFrom0To1,
-  "5": pricesCarFrom1To5,
-  "10": pricesCarFrom5To10,
-  "15": pricesCarFrom10To15,
-  "20": pricesCarFrom15To20,
+  "1": 154,
+  "5": 203,
+  "10": 258,
+  "20": 309,
+};
+
+const citiesPrices: CitiesPricesType = {
+  Алматы: {
+    "1": 35000,
+    "5": 40000,
+    "10": 45000,
+    "20": 50000,
+  },
+  Астана: {
+    "1": 95000,
+    "5": 130000,
+    "10": 180000,
+    "20": 230000,
+  },
+  Шымкент: {
+    "1": 90000,
+    "5": 115000,
+    "10": 150000,
+    "20": 170000,
+  },
+  Тараз: {
+    "1": 55000,
+    "5": 70000,
+    "10": 90000,
+    "20": 120000,
+  },
+  Кызылорда: {
+    "1": 110000,
+    "5": 140000,
+    "10": 180000,
+    "20": 2100000,
+  },
 };
 
 const getMovingPricesByCapacity = (
   carCapacity: number,
-  prices: CommonPricesType | PricesType
-): PricesType | number => {
-  const getMovingPriceKeys: string[] = Object.keys(prices).filter(
-    (key) => carCapacity <= Number(key)
-  );
-  return prices[getMovingPriceKeys[0]];
+  commonPrices: CommonPricesType,
+  citiesPrices: CitiesPricesType,
+  pointA: string,
+  pointB: string
+): number => {
+  if (pointA === pointB) {
+    const prices =
+      citiesPrices[citiesPrices.hasOwnProperty(pointB) ? pointB : "Тараз"];
+    const filteredCarCapacity: string[] = Object.keys(prices).filter(
+      (key) => carCapacity <= Number(key)
+    );
+    return prices[filteredCarCapacity[0]];
+  } else {
+    const filteredCarCapacity: string[] = Object.keys(commonPrices).filter(
+      (key) => carCapacity <= Number(key)
+    );
+    return commonPrices[filteredCarCapacity[0]];
+  }
 };
 
-export const getMovingPrice = (carCapacity: number, route: number): number => {
-  const pricesByCapacity = getMovingPricesByCapacity(
-    carCapacity,
-    commonPrices
-  ) as PricesType;
-  const price = getMovingPricesByCapacity(carCapacity, pricesByCapacity) as number;
-  return price * route;
+export const getMovingPrice = (
+  carCapacity: number,
+  distance: number,
+  pointA: string,
+  pointB: string
+): number => {
+  const isOneCity = pointA === pointB;
+  const price = getMovingPricesByCapacity(carCapacity, commonPrices, citiesPrices, pointA, pointB);
+  return isOneCity ? price : price * distance;
 };

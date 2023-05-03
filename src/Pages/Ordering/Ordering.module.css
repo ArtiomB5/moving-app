@@ -21,10 +21,6 @@
     justify-content: space-between;
 }
 
-.servicesTitle {
-    width: 60px;
-}
-
 .servicesCountTitle {
     width: 140px;
 }
@@ -49,4 +45,24 @@
 
 .countResult {
     margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    height: 45px;
+}
+
+.selector {
+    padding: 0 122px
+}
+
+.checkbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }

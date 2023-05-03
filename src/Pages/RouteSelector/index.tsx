@@ -7,9 +7,8 @@ import { Layout } from "../../Components/Layout";
 const RouteSelector = () => {
   const token = localStorage.getItem("token");
 
-  const [geolocation, setGeolocation] = useState<null | [number, number] | string>(null)
-  const [isOrdering, setIsOrdering] = useState(false)
-
+  const [geolocation, setGeolocation] = useState<null | [number, number] | string>(null);
+  const [isOrdering, setIsOrdering] = useState(false);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(success, error);
