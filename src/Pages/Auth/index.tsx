@@ -1,8 +1,9 @@
-import { ChangeEvent, ChangeEventHandler, FC, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { Input } from "@rebass/forms";
 import { CustomButton } from "../../Components/CustomButton";
 import styles from "./Auth.module.css";
 import { useTranslation } from "react-i18next";
+import { Loading } from "../../Components/Loading";
 
 interface IAuthProps {
   onSubmitHandler: () => void;
@@ -17,6 +18,7 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
     login: false,
     signin: false,
   });
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation("common");
 
   const options = {
@@ -34,6 +36,7 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
   };
 
   const onAuthHandler = () => {
+    setLoading(true);
     step.login &&
       fetch(
         "https://spheric-handler-384113.ey.r.appspot.com/v1/users/login",
@@ -43,9 +46,13 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
         .then((response) => {
           localStorage.setItem("token", response.accessToken);
           localStorage.setItem("refreshToken", response.refreshToken);
+          setLoading(false);
           onSubmitHandler();
         })
-        .catch(() => setError(true));
+        .catch(() => {
+          setError(true);
+          setLoading(false);
+        });
 
     step.signin &&
       fetch("https://spheric-handler-384113.ey.r.appspot.com/v1/users", options)
@@ -54,9 +61,13 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
             setStage(true);
             setEmail("");
             setPassword("");
+            setLoading(false);
           }
         })
-        .catch(() => setError(true));
+        .catch(() => {
+          setLoading(false);
+          setError(true);
+        });
   };
 
   const onChangeInputHandler = (inputSetter: () => void) => {
@@ -98,11 +109,17 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
             />
           </>
 
-          <CustomButton
-            handler={onAuthHandler}
-            title={step.login ? t("Login") : t("Signin")}
-            isDisabled={email === "" || password === ""}
-          />
+          <div style={{width: "100%", height: "40px", display: "flex", flexDirection: "row", justifyContent: "center", alignContent: "center"}}>
+            {loading ? (
+              <Loading />
+            ) : (
+              <CustomButton
+                handler={onAuthHandler}
+                title={step.login ? t("Login") : t("Signin")}
+                isDisabled={email === "" || password === ""}
+              />
+            )}
+          </div>
 
           {isError && (
             <div className={styles.error}>Wrong login or password!</div>

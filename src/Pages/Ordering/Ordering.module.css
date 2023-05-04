@@ -22,7 +22,7 @@
 }
 
 .servicesCountTitle {
-    width: 140px;
+    width: 80%;
 }
 
 .servicesInput {
@@ -35,6 +35,7 @@
     flex-direction: row; 
     align-items: center; 
     justify-content: space-between;
+    width: 95%;
 }
 
 .serviceInput {

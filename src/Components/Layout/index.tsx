@@ -73,7 +73,7 @@ export const Layout: FC<ILayout> = ({ content, jsonld = '' }) => {
             <CustomModal buttonTitle={t("About")} isOpen={isOpenAbout} setIsOpen={setIsOpenAbout}>
               <About />
             </CustomModal>
-            {!token && <CustomModal buttonTitle={t("Login")} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
+            {!token && <CustomModal buttonTitle={t("Account")} isOpen={isOpenLogin} setIsOpen={setIsOpenLogin}>
               <Auth onSubmitHandler={onSubmitHandler} />
             </CustomModal>}
             {token && <CustomModal buttonTitle={t("Account")} isOpen={isOpenUserPage} setIsOpen={setIsOpenUserPage}>

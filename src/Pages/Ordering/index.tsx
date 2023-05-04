@@ -31,14 +31,33 @@ export const Ordering: FC<IOrderingProps> = ({
   const [loadingPrice, setLoadingPrice] = useState(0);
   const [packingPrice, setPackingPrice] = useState(0);
   const [pageLoading, setPageLoading] = useState(false);
+  const { t } = useTranslation("common");
+
+  const resetRequest = () => {
+    setMovingDate("");
+    setTime("");
+    setLoading("0");
+    setPacking("0");
+    setNumberOfMovers("0");
+    setNumberOfPackers("0");
+    setCarLoadCapacity(getCars()[2]);
+    setMovingPrice(0);
+    setLoadingPrice(0);
+    setPackingPrice(0);
+  }
+
+  const pointA = localStorage.getItem(t("Point A"));
+  const pointB = localStorage.getItem(t("Point B"));
 
   useEffect(() => {
-    const pointA = localStorage.getItem(t("Point A"));
-    const pointB = localStorage.getItem(t("Point B"));
-    pointA && pointB && setMovingPrice(getMovingPrice(carLoadCapacity, distance, pointA, pointB));
+    pointA &&
+      pointB &&
+      setMovingPrice(getMovingPrice(carLoadCapacity, distance, pointA, pointB));
   }, [carLoadCapacity, distance]);
 
-  const { t } = useTranslation("common");
+  const price = Math.round(
+    movingPrice + loadingPrice + packingPrice
+  );
 
   const options = {
     method: "POST",
@@ -50,11 +69,15 @@ export const Ordering: FC<IOrderingProps> = ({
       movingDate,
       packing,
       loading,
-      carId: carLoadCapacity,
+      time,
       distance,
-      pointAName: "test_aad076dfba783",
+      numberOfMovers,
+      numberOfPackers,
+      price,
+      carId: carLoadCapacity,
+      pointAName: pointA,
       pointA: points[0],
-      pointBName: "test_3e6f7dd1b98za",
+      pointBName: pointB,
       pointB: points[1],
     }),
   };
@@ -63,22 +86,20 @@ export const Ordering: FC<IOrderingProps> = ({
     setPageLoading(true);
     fetch("https://spheric-handler-384113.ey.r.appspot.com/v1/orders", options)
       .then((response) => response.json())
-      .then(() => setPageLoading(false))
+      .then(() => {
+        setPageLoading(false);
+        resetRequest();
+        onSubmitHandler();
+      })
       .catch((err) => {
         console.error(err);
+        resetRequest();
         setPageLoading(false);
       });
-    // console.log({
-    //   MovingDate,
-    //   time,
-    //   loading,
-    //   packing,
-    //   carLoadCapacity,
-    //   points,
-    //   distance,
-    //   numberOfMovers,
-    //   numberOfPackers,
-    // });
+  };
+
+  const radioButtonHandler = (e: any) => {
+    setCarLoadCapacity(Number(e.currentTarget.value));
   };
 
   return (
@@ -106,20 +127,15 @@ export const Ordering: FC<IOrderingProps> = ({
         />
       </div>
       <div className={styles.cell}>
-        <span>{`${t("Car Load Capacity, tonnes")}:`}</span>
-        <Select
-          id="carLoadCapacity"
-          name="carLoadCapacity"
-          defaultValue={carLoadCapacity}
-          style={{ padding: "0 122px" }}
-          onChange={(e) => {
-            setCarLoadCapacity(Number(e.currentTarget.value));
-          }}
-        >
-          {getCars().map((car) => (
-            <option key={car}>{car}</option>
+        <fieldset>
+          <legend>{`${t("Car Load Capacity, tonnes")}`}:</legend>
+          {getCars().map((car, id) => (
+            <div key={car}>
+              <input  type={"radio"} name={String(car)} value={car} checked={car === carLoadCapacity} onClick={radioButtonHandler}/>
+              <label>{car}</label>
+            </div>
           ))}
-        </Select>
+        </fieldset>
       </div>
       <div className={styles.additionalServices}>
         <div className={styles.checkbox}>
@@ -173,17 +189,14 @@ export const Ordering: FC<IOrderingProps> = ({
             onChange={(e) => {
               const value = e.currentTarget.value;
               const valueNumber = Number(value);
-              if (Number(value) >= 40) {
+              if (valueNumber >= 40) {
                 setNumberOfMovers("40");
-                setLoadingPrice(
-                  getLoadingPrice(carLoadCapacity, 40, 0.35, 3000)
-                );
+              } else if (valueNumber < 0) {
+                setNumberOfMovers("0");
               } else {
-                setLoadingPrice(
-                  getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 3000)
-                );
                 setNumberOfMovers(value);
               }
+              setLoadingPrice(getLoadingPrice(carLoadCapacity, 40, 0.35, 3000));
             }}
             className={styles.serviceInput}
           />
@@ -200,17 +213,16 @@ export const Ordering: FC<IOrderingProps> = ({
             onChange={(e) => {
               const value = e.currentTarget.value;
               const valueNumber = Number(value);
-              if (Number(value) >= 40) {
+              if (valueNumber >= 40) {
                 setNumberOfPackers("40");
-                setPackingPrice(
-                  getLoadingPrice(carLoadCapacity, 40, 0.35, 2100)
-                );
+              } else if (valueNumber < 0) {
+                setNumberOfPackers("0");
               } else {
-                setPackingPrice(
-                  getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 2100)
-                );
                 setNumberOfPackers(value);
               }
+              setPackingPrice(
+                getLoadingPrice(carLoadCapacity, valueNumber, 0.35, 2100)
+              );
             }}
             className={styles.serviceInput}
           />
@@ -219,9 +231,7 @@ export const Ordering: FC<IOrderingProps> = ({
       <h3 className={styles.countResult}>{`${
         Math.round(distance * 10) / 10
       } ${t("Km")}`}</h3>
-      <h3 className={styles.countResult}>{`${Math.round(
-        movingPrice + loadingPrice + packingPrice
-      )} ТГ`}</h3>
+      <h3 className={styles.countResult}>{`${price} ${t("KZT")}`}</h3>
 
       <div className={styles.container}>
         {pageLoading ? (
