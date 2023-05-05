@@ -15,6 +15,8 @@ export const UserPage: FC<IUserPageProps> = ({ logoutHandler }) => {
   const { t } = useTranslation("common");
 
   useEffect(() => {
+    setPageLoading(true);
+
     const options = {
       method: "GET",
       headers: {
@@ -24,7 +26,6 @@ export const UserPage: FC<IUserPageProps> = ({ logoutHandler }) => {
     };
 
     const fetchOrders = () => {
-      setPageLoading(true);
       fetch(
         "https://spheric-handler-384113.ey.r.appspot.com/v1/orders",
         options
@@ -45,15 +46,19 @@ export const UserPage: FC<IUserPageProps> = ({ logoutHandler }) => {
   const buttonHandler = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("refreshToken");
 
     if (!localStorage.getItem("token")) {
       logoutHandler();
     }
   };
+
+  const email = localStorage.getItem("email");
+
   return (
     <>
       <div className={styles.logout}>
-        <>user@email.com</>
+        <>{email}</>
         <CustomButton handler={buttonHandler} title={t("Logout")} />
       </div>
       <h3>{t("Orders")}</h3>

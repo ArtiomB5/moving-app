@@ -4,6 +4,7 @@ import { CustomButton } from "../../Components/CustomButton";
 import styles from "./Auth.module.css";
 import { useTranslation } from "react-i18next";
 import { Loading } from "../../Components/Loading";
+import { parseJwt } from "../../Utils/parseJwt";
 
 interface IAuthProps {
   onSubmitHandler: () => void;
@@ -44,8 +45,10 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
       )
         .then((response) => response.json())
         .then((response) => {
-          localStorage.setItem("token", response.accessToken);
+          const token = response.accessToken;
+          localStorage.setItem("token", token);
           localStorage.setItem("refreshToken", response.refreshToken);
+          localStorage.setItem("email", parseJwt(token).email)
           setLoading(false);
           onSubmitHandler();
         })

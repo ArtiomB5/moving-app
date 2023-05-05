@@ -51,7 +51,7 @@ export const Layout: FC<ILayout> = ({ content, jsonld = '' }) => {
     localStorage.setItem("lang", lang)
     setIsOpenLng(false);
   }
-
+  
   return (
     <>
       <Seo jsonld={jsonld}/>
