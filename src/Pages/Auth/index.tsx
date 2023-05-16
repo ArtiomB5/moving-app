@@ -112,7 +112,7 @@ export const Auth: FC<IAuthProps> = ({ onSubmitHandler }) => {
             />
           </>
 
-          <div style={{width: "100%", height: "40px", display: "flex", flexDirection: "row", justifyContent: "center", alignContent: "center"}}>
+          <div className={styles.login}>
             {loading ? (
               <Loading />
             ) : (

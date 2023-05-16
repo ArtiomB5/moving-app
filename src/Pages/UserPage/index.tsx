@@ -66,37 +66,21 @@ export const UserPage: FC<IUserPageProps> = ({ logoutHandler }) => {
         {pageLoading && <Loading />}
         {!pageLoading && (
           <>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                width: "100%",
-                justifyContent: "space-around",
-                alignItems: "center",
-              }}
-            >
+            <div className={styles.tableRow}>
               <div>{t("Date")}</div>
               <div>{t("Car Load Capacity, tonnes")}</div>
-              <div>distance</div>
+              <div>{t("Distance")}</div>
               <div>{t("Point A")}</div>
               <div>{t("Point B")}</div>
               <div>{t("Time")}</div>
               <div>{t("Number of movers")}</div>
               <div>{t("Number of packers")}</div>
-              <div>price</div>
+              <div>{t("Cost")}</div>
             </div>
             {orders.map((order: IOrder) => {
               return (
                 <div key={order.id}>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      width: "100%",
-                      justifyContent: "space-around",
-                      alignItems: "center",
-                    }}
-                  >
+                  <div className={styles.tableRow}>
                     <div>{order.movingDate}</div>
                     <div>{order.carId}</div>
                     <div>{order.distance}</div>

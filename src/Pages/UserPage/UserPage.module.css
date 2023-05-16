@@ -4,3 +4,11 @@
     justify-content: space-around; 
     align-items: center;
 }
+
+.tableRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+}
